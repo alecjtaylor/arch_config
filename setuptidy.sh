@@ -24,11 +24,13 @@ custom_Config() {
 EOF
 
     echo -e "\nChoose an option:\n"
-    echo "1) Base Config Customisation"
-    echo "2) Roll back Base Config Customisation"
-    echo "3) Hyprland 02"
-    echo "4) i3 01"
-    echo "5) Returning to main menu"
+    echo "1) Base Config Customisation - Deploy"
+    echo "2) Base Config Customisation - Roll Back"
+    echo "3) Hyprland 01 - Deploy"
+    echo "4) Hyprland 01 - Roll Back" 
+	echo "5) i3 01 - Deploy"
+	echo "6) i3 01 - Roll Back"
+    echo "7) Returning to main menu"
     echo
 
     read -p "Enter choice [1-5]: " choice
@@ -37,7 +39,9 @@ EOF
       2) echo "Base Config rollback" && stow_from_config base stow.config --unstow && sleep 5 ;;
       3) echo "Hyprland 01" && sleep 2 ;;
       4) echo "i3 01" && sleep 3 ;;
-      5) echo "Return to main menu." && sleep 1.5; return 1 ;;
+	  5) echo ""
+      6) echo ""
+	  7) echo "Return to main menu." && sleep 1.5; return 1 ;;
       *) echo "Invalid option." ;;
     esac
   done
