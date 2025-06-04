@@ -6,40 +6,41 @@
 
 # Function to test config
 custom_Config() {
+  while true; do
   clear
     cat << "EOF"
 
- ######################################################
- ######################################################
- ##      _       _  ____ _____                       ##
- ##     / \     | |/ ___|_   _|                      ##
- ##    / _ \ _  | | |     | |                        ##
- ##   / ___ \ |_| | |___  | |    Set up Arch Linux   ##
- ##  /_/   \_\___/ \____| |_|    by AJCT             ##
- ##                                                  ##
- ######################################################
- ######################################################
+ ###############################################################################
+ ###############################################################################
+ ##    ______           __                     ______            _____        ##
+ ##   / ____/_  _______/ /_____  ____ ___     / ____/___  ____  / __(_)___ _  ##
+ ##  / /   / / / / ___/ __/ __ \/ __ `__ \   / /   / __ \/ __ \/ /_/ / __ `/  ##
+ ## / /___/ /_/ (__  ) /_/ /_/ / / / / / /  / /___/ /_/ / / / / __/ / /_/ /   ##
+ ## \____/\__,_/____/\__/\____/_/ /_/ /_/   \____/\____/_/ /_/_/ /_/\__, /    ##
+ ##                                                                /____/     ##
+ ###############################################################################
+ ###############################################################################
 
 EOF
 
     echo -e "\nChoose an option:\n"
-    echo "1) Hyprland 01"
-    echo "2) Hyprland 02"
-    echo "3) Hyprland 03"
+    echo "1) Base Config Customisation"
+    echo "2) Roll back Base Config Customisation"
+    echo "3) Hyprland 02"
     echo "4) i3 01"
     echo "5) Returning to main menu"
     echo
 
     read -p "Enter choice [1-5]: " choice
     case $choice in
-      1) echo "Hyprland 01 " && sleep 2 ;;
-      2) echo "Hyprland 02" && sleep 2 ;;
-      3) echo "Hyprland 03" && sleep 2 ;;
+      1) echo "Base Config deployment... " && stow_from_config base stow.config && sleep 5 ;;
+      2) echo "Base Config rollback" && stow_from_config base stow.config --unstow && sleep 5 ;;
+      3) echo "Hyprland 01" && sleep 2 ;;
       4) echo "i3 01" && sleep 3 ;;
       5) echo "Return to main menu." && sleep 1.5; return 1 ;;
       *) echo "Invalid option." ;;
     esac
-  
+  done
 }
 
 # Main menu
@@ -48,16 +49,17 @@ user_Choice() {
     clear
     cat << "EOF"
 
- ######################################################
- ######################################################
- ##      _       _  ____ _____                       ##
- ##     / \     | |/ ___|_   _|                      ##
- ##    / _ \ _  | | |     | |                        ##
- ##   / ___ \ |_| | |___  | |    Set up Arch Linux   ##
- ##  /_/   \_\___/ \____| |_|    by AJCT             ##
- ##                                                  ##
- ######################################################
- ######################################################
+ #############################################################
+ #############################################################
+ ##     ___              __       _____      __             ##
+ ##    /   |  __________/ /_     / ___/___  / /___  ______  ##
+ ##   / /| | / ___/ ___/ __ \    \__ \/ _ \/ __/ / / / __ \ ##
+ ##  / ___ |/ /  / /__/ / / /   ___/ /  __/ /_/ /_/ / /_/ / ##
+ ## /_/  |_/_/   \___/_/ /_/   /____/\___/\__/\__,_/ .___/  ##
+ ##                                               /_/       ##
+ ##              By AJCT - alecjtaylor.com                  ##
+ #############################################################
+ #############################################################
 
 EOF
 
@@ -276,6 +278,121 @@ start_stow() {
     * ) echo "Please enter 'y' or 'no'." ;;
   esac
 }
+
+
+#########################
+stow_from_config() {
+  local stow_base_dir="$1"
+  local config_file="$2"
+  local mode="$3"  # optional: "--unstow"
+  local original_dir
+  original_dir="$(pwd)"
+
+  # Validate arguments
+  if [[ -z "$stow_base_dir" || -z "$config_file" ]]; then
+    echo "Usage: run_stow_from_config <stow_base_dir> <config_file> [--unstow]"
+    return 1
+  fi
+
+  local base_path="$original_dir/$stow_base_dir"
+  local config_path="$base_path/$config_file"
+
+  if [[ ! -d "$base_path" ]]; then
+    echo "❌ Error: Directory '$base_path' not found."
+    return 1
+  fi
+
+  if [[ ! -f "$config_path" ]]; then
+    echo "❌ Error: Config file '$config_path' not found."
+    return 1
+  fi
+
+  # Build stow arguments
+  local stow_args=(-t "$HOME")
+  if [[ "$mode" == "--unstow" ]]; then
+    stow_args=(-D -t "$HOME")
+    echo "🔁 Unstowing mode"
+  else
+    echo "✅ Stowing mode"
+  fi
+
+  # Change into stow base dir
+  cd "$base_path" || {
+    echo "❌ Could not cd into $base_path"
+    return 1
+  }
+
+  echo "📂 Running in: $base_path"
+  echo "📄 Using config: $config_file"
+
+  # Loop through each line
+while IFS= read -r line || [[ -n "$line" ]]; do
+  # Skip empty lines and comments
+  [[ -z "$line" || "$line" =~ ^# ]] && continue
+
+  if [[ -d "$line" ]]; then
+    local target_path="$HOME/.config/$line"
+
+    if [[ "$mode" == "--unstow" ]]; then
+      echo "➖ Unstowing: $line"
+      stow -D "$line"
+
+      # Check for backups
+      backup_glob="$target_path.backup.*"
+      latest_backup=$(ls -t $backup_glob 2>/dev/null | head -n 1)
+
+      if [[ -n "$latest_backup" ]]; then
+        read -p "🗂️  Restore backup from $latest_backup? (y/n): " yn < /dev/tty
+        case "$yn" in
+          [Yy]* )
+            mv "$latest_backup" "$target_path"
+            echo "✅ Restored backup to: $target_path"
+            ;;
+          * )
+            echo "⏩ Skipping restore for: $line"
+            ;;
+        esac
+      fi
+
+    else
+      # Stow mode
+      if [[ -e "$target_path" ]]; then
+        echo "⚠️  Existing config detected at: $target_path"
+        read -p "❓ Backup and remove '$target_path' before stowing '$line'? (y/n): " yn < /dev/tty
+
+        case "$yn" in
+          [Yy]* )
+            timestamp=$(date +%Y%m%d_%H%M%S)
+            backup_path="$target_path.backup.$timestamp"
+            mv "$target_path" "$backup_path"
+            echo "💾 Backed up to: $backup_path"
+            ;;
+          [Nn]* )
+            echo "⏩ Skipping $line"
+            continue
+            ;;
+          * )
+            echo "❌ Invalid response. Skipping $line."
+            continue
+            ;;
+        esac
+      fi
+
+      echo "➕ Stowing: $line"
+      stow -t "$HOME" "$line"
+    fi
+
+  else
+    echo "⚠️  Skipping: '$line' not found in $base_path"
+  fi
+done < "$config_path"
+
+  # Return to original directory
+  cd "$original_dir"
+}
+
+
+
 
 #####################
 ### Start of code ###
