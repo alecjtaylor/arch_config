@@ -1,0 +1,5 @@
+# This directory is a Syncthing folder marker.
+# Do not delete.
+
+folderID: iiyqn-jpdev
+created: 2025-06-05T00:35:48+01:00
