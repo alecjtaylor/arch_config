@@ -68,28 +68,26 @@ user_Choice() {
 EOF
 
     echo -e "\nChoose an option:\n"
-    echo "1) System Update"
-    echo "2) Base System Install"
-    echo "3) Extra packages Install"
-    echo "4) Hyprland Install"
-    echo "5) Start Services for new build"
-    echo "6) i3wm packages Install"
-    echo "7) *** KDE go to custom config setting ***"
-    echo "8) Deploy custom configuration stowed packages"
-    echo "9) Exit"
+    echo "1) UPDATE - System Update"
+    echo "2) INSTALL - Base System"
+    echo "3) INSTALL - Extra packages"
+    echo "4) INSTALL - Hyprland packages"
+	echo "5) INSTALL - i3 packages"
+    echo "6) SERVICES - Start Services for new build"
+	echo "7) CONFIG - Deploy custom configuration stowed packages"
+	echo "8) Exit"
     echo
 
-    read -p "Enter choice [1-9]: " choice
+    read -p "Enter choice [1-8]: " choice
     case $choice in
       1) update_Pacman && tweak_Pacman && check_AUR && check_Refelector ;;
       2) echo "Installing base packages..." && sleep 2 && install_packages "${PACKAGES[@]}" && sleep 2 ;;
       3) echo "Installing Extra packages..." && sleep 2 && install_packages "${EXTRA[@]}" && sleep 2 ;;
       4) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" && sleep 2 ;;
-      5) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall ;;
-      6) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3[@]}" ;;
+      5) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3wm[@]}" && sleep 2 ;;
+      6) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall ;;
       7) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
-      8) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
-      9) echo "Bye!"; return 1 ;;
+      8) echo "Bye!"; return 1 ;;
       *) echo "Invalid option." ;;
     esac
   done
