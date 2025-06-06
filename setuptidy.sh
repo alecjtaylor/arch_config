@@ -24,24 +24,24 @@ custom_Config() {
 EOF
 
     echo -e "\nChoose an option:\n"
-    echo "1) Base Config Customisation - Deploy"
-    echo "2) KDE Base Config Deploy"
-    echo "3) Hyprland 01 - Deploy"
-    echo "4) Hyprland 01 - Roll Back" 
-	echo "5) i3 01 - Deploy"
-	echo "6) i3 01 - Roll Back"
+    echo "1) Base Config Deploy"
+    echo "2) KDE Config Deploy"
+    echo "3) Hyprland 01 Deploy"
+    echo "4) i3_01 Deploy" 
+	echo "5) ***"
+	echo "6) ***"
     echo "7) Returning to main menu"
     echo
 
     read -p "Enter choice [1-5]: " choice
     case $choice in
       1) echo "Base Config deployment... " && stow_from_config base base/stow.config && sleep 5 ;;
-      2) echo "Installing KDE config files" && sleep 2 && restore_kde_settings kde_01/restore.tar.gz ;;
-      3) echo "Hyprland 01 config deployment" && stow_from_config hypr_01 hypr_01/stow.config && sleep 5 ;;
-      4) echo "i3 01" && sleep 3 ;;
+      2) echo "Installing KDE config files" && sleep 2 && restore_kde_settings kde_01/restore.tar.gz && sleep 5 ;;
+      3) echo "Hypr_01 config deployment" && stow_from_config hypr_01 hypr_01/stow.config && sleep 5 ;;
+      4) echo "i3_01 config deployment" && stow_from_config i3_01 i3_01/stow/.config && sleep 5 ;;
 	  5) echo "" ;;
       6) echo "" ;;
-	  7) echo "Return to main menu." && sleep 1.5; return 1 ;;
+	  7) echo "Return to main menu." && sleep 2; return 1 ;;
       *) echo "Invalid option." ;;
     esac
   done
@@ -73,8 +73,8 @@ EOF
     echo "3) Extra packages Install"
     echo "4) Hyprland Install"
     echo "5) Start Services for new build"
-    echo "6) *** KDE go to custom config setting ***"
-    echo "7) i3wm packages Install"
+    echo "6) i3wm packages Install"
+    echo "7) *** KDE go to custom config setting ***"
     echo "8) Deploy custom configuration stowed packages"
     echo "9) Exit"
     echo
@@ -86,8 +86,8 @@ EOF
       3) echo "Installing Extra packages..." && sleep 2 && install_packages "${EXTRA[@]}" && sleep 2 ;;
       4) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" && sleep 2 ;;
       5) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall ;;
-      6) echo "Installing KDE config files" & sleep 2 && custom_Config ;;
-      7) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3[@]}" ;;
+      6) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3[@]}" ;;
+      7) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
       8) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
       9) echo "Bye!"; return 1 ;;
       *) echo "Invalid option." ;;
