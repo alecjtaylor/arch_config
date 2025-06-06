@@ -85,7 +85,7 @@ EOF
       3) echo "Installing Extra packages..." && sleep 2 && install_packages "${EXTRA[@]}" && sleep 2 ;;
       4) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" && sleep 2 ;;
       5) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3wm[@]}" && sleep 2 ;;
-      6) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall ;;
+      6) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall && start_tlp;;
       7) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
       8) echo "Bye!"; return 1 ;;
       *) echo "Invalid option." ;;
@@ -205,6 +205,22 @@ tweak_ssdm() {
     [Nn]* ) ;;
     * ) echo "Please enter 'y' or 'n'." ;;
   esac
+}
+
+start_tlp() {
+  read -p "Do you want to start the thinkpad Service? (y/n): " yn
+  case $yn in
+    [Yy]* )
+      echo "Starting thinkpad services..."
+       systemctl --user enable tlp --now
+     sleep 4
+      ;;
+    [Nn]* ) ;;
+    * ) echo "Please enter yes or no." ;;
+  esac
+}
+
+
 }
 
 start_syncthing() {
