@@ -37,7 +37,7 @@ EOF
     case $choice in
       1) echo "Base Config deployment... " && stow_from_config base base/stow.config && sleep 5 ;;
       2) echo "Installing KDE config files" && sleep 2 && restore_kde_settings kde_01/restore.tar.gz ;;
-      3) echo "Hyprland 01" && sleep 2 ;;
+      3) echo "Hyprland 01 config deployment" && stow_from_config hypr_01 hypr_01/stow.config && sleep 5 ;;
       4) echo "i3 01" && sleep 3 ;;
 	  5) echo "" ;;
       6) echo "" ;;
@@ -327,7 +327,6 @@ stow_impact() {
   local package_list_file="$2"
   local target_dir="$HOME"
 
-  # Validate inputs
   if [[ ! -d "$packages_root" ]]; then
     echo "Packages root directory '$packages_root' does not exist." >&2
     return 1
@@ -337,30 +336,38 @@ stow_impact() {
     return 1
   fi
 
+  declare -A seen
+
   while IFS= read -r package_name || [[ -n "$package_name" ]]; do
-    # Skip empty lines or lines starting with #
     [[ -z "$package_name" || "$package_name" =~ ^# ]] && continue
 
     local package_dir="$packages_root/$package_name"
-
     if [[ ! -d "$package_dir" ]]; then
       echo "Package directory '$package_dir' does not exist. Skipping." >&2
       continue
     fi
 
-    # Resolve absolute path for package dir
-    package_dir=$(realpath "$package_dir")
+    (
+      cd "$package_dir" || exit
 
-    # Find files and output target symlink paths
-    find "$package_dir" -type f -print0 | while IFS= read -r -d '' file; do
-      rel_path=$(realpath --relative-to="$package_dir" "$file")
-      echo "$target_dir/$rel_path"
-    done
+      find . -type f -path "./.config/*" -print0 | while IFS= read -r -d '' file; do
+        local rel_path="${file#./}"
+        # Remove ".config/" prefix
+        local config_subpath="${rel_path#".config/"}"
+
+        # Top-level item (e.g. nvim/init.vim or .editorconfig)
+        local top_level="${config_subpath%%/*}"
+
+        # Handle case where file is directly under .config (no slash in subpath)
+        if [[ "$config_subpath" == "$top_level" ]]; then
+          echo "$target_dir/.config/$top_level"
+        elif [[ -n "$top_level" && -z "${seen[$top_level]}" ]]; then
+          echo "$target_dir/.config/$top_level"
+          seen["$top_level"]=1
+        fi
+      done
+    )
   done < "$package_list_file"
-
-  # Wait for user keypress before exiting
-  echo
-  read -rsp $'Press any key to continue...\n' -n1
 }
 
 
@@ -370,7 +377,6 @@ stow_from_config() {
   local package_list_file="$2"
   local target_dir="$HOME"
 
-  # Validate inputs
   if [[ ! -d "$packages_root" ]]; then
     echo "Packages root directory '$packages_root' does not exist." >&2
     return 1
@@ -380,26 +386,55 @@ stow_from_config() {
     return 1
   fi
 
+  echo "Gathering files and directories to delete..."
+  # Capture stow_impact output into an array
+  mapfile -t paths_to_delete < <(stow_impact "$packages_root" "$package_list_file")
+
+  echo "Deleting files..."
+  for path in "${paths_to_delete[@]}"; do
+    if [[ -L "$path" || -f "$path" ]]; then
+      echo "Removing file or symlink: $path"
+      rm -f "$path"
+    fi
+  done
+
+  echo "Deleting empty directories..."
+  # Attempt to delete directories listed (only if empty)
+  # Sorting descending to remove nested dirs before parents
+  for path in $(printf '%s\n' "${paths_to_delete[@]}" | sort -r); do
+    if [[ -d "$path" ]]; then
+      if rmdir --ignore-fail-on-non-empty "$path" 2>/dev/null; then
+        echo "Removed empty directory: $path"
+      fi
+    else
+      # Also try to remove parent dirs if empty
+      local parent
+      parent=$(dirname "$path")
+      while [[ "$parent" != "$target_dir" && "$parent" != "/" ]]; do
+        if rmdir --ignore-fail-on-non-empty "$parent" 2>/dev/null; then
+          echo "Removed empty parent directory: $parent"
+          parent=$(dirname "$parent")
+        else
+          break
+        fi
+      done
+    fi
+  done
+
+  echo "Running stow on packages..."
   while IFS= read -r package_name || [[ -n "$package_name" ]]; do
     [[ -z "$package_name" || "$package_name" =~ ^# ]] && continue
-
-    local package_dir="$packages_root/$package_name"
-    if [[ ! -d "$package_dir" ]]; then
-      echo "Package directory '$package_dir' does not exist. Skipping." >&2
-      continue
+    if [[ -d "$packages_root/$package_name" ]]; then
+      echo "Stowing: $package_name"
+      stow -d "$packages_root" -t "$target_dir" "$package_name"
+    else
+      echo "Warning: Package '$package_name' not found in '$packages_root'. Skipping." >&2
     fi
-
-    # Go into package directory temporarily to simulate how stow maps structure
-    (
-      cd "$package_dir" || exit
-      find . -type f -print0 | while IFS= read -r -d '' file; do
-        local clean_path="${file#./}"
-        echo "$target_dir/$clean_path"
-      done
-    )
   done < "$package_list_file"
 
+  echo "Done."
 }
+
 
 
 
