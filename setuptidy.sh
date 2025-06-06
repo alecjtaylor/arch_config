@@ -35,7 +35,7 @@ EOF
 
     read -p "Enter choice [1-5]: " choice
     case $choice in
-      1) echo "Base Config deployment... " && stow_from_config base stow.config && sleep 5 ;;
+      1) echo "Base Config deployment... " && stow_from_config base base/stow.config && sleep 5 ;;
       2) echo "Base Config rollback" && stow_from_config base stow.config --unstow && sleep 5 ;;
       3) echo "Hyprland 01" && sleep 2 ;;
       4) echo "i3 01" && sleep 3 ;;
@@ -285,78 +285,84 @@ start_stow() {
 
 
 #########################
-stow_from_config() {
-  local stow_base_dir="$1"
-  local config_file="$2"
-  local original_dir
-  original_dir="$(pwd)"
 
-  # Validate arguments
-  if [[ -z "$stow_base_dir" || -z "$config_file" ]]; then
-    echo "Usage: stow_from_config <stow_base_dir> <config_file>"
+stow_impact() {
+  local packages_root="$1"
+  local package_list_file="$2"
+  local target_dir="$HOME"
+
+  # Validate inputs
+  if [[ ! -d "$packages_root" ]]; then
+    echo "Packages root directory '$packages_root' does not exist." >&2
+    return 1
+  fi
+  if [[ ! -f "$package_list_file" ]]; then
+    echo "Package list file '$package_list_file' does not exist." >&2
     return 1
   fi
 
-  local base_path="$original_dir/$stow_base_dir"
-  local config_path="$base_path/$config_file"
+  while IFS= read -r package_name || [[ -n "$package_name" ]]; do
+    # Skip empty lines or lines starting with #
+    [[ -z "$package_name" || "$package_name" =~ ^# ]] && continue
 
-  if [[ ! -d "$base_path" ]]; then
-    echo "❌ Error: Directory '$base_path' not found."
-    return 1
-  fi
+    local package_dir="$packages_root/$package_name"
 
-  if [[ ! -f "$config_path" ]]; then
-    echo "❌ Error: Config file '$config_path' not found."
-    return 1
-  fi
-
-  # Change into stow base dir
-  cd "$base_path" || {
-    echo "❌ Could not cd into $base_path"
-    return 1
-  }
-
-  echo "📂 Running in: $base_path"
-  echo "📄 Using config: $config_file"
-
-  # Loop through each line
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    # Skip empty lines and comments
-    [[ -z "$line" || "$line" =~ ^# ]] && continue
-
-    if [[ -d "$line" ]]; then
-      local target_path="$HOME/.config/$line"
-
-      if [[ -e "$target_path" ]]; then
-        echo "⚠️  Existing config detected at: $target_path"
-        read -p "❓ Overwrite this config? (y to delete and replace / n to skip): " yn < /dev/tty
-
-        case "$yn" in
-          [Yy]* )
-            rm -rf "$target_path"
-            echo "🗑️ Removed: $target_path"
-            ;;
-          [Nn]* )
-            echo "⏩ Skipping $line"
-            continue
-            ;;
-          * )
-            echo "❌ Invalid response. Skipping $line."
-            continue
-            ;;
-        esac
-      fi
-
-      echo "➕ Stowing: $line"
-      stow -t "$HOME" "$line"
-
-    else
-      echo "⚠️  Skipping: '$line' not found in $base_path"
+    if [[ ! -d "$package_dir" ]]; then
+      echo "Package directory '$package_dir' does not exist. Skipping." >&2
+      continue
     fi
-  done < "$config_path"
 
-  # Return to original directory
-  cd "$original_dir"
+    # Resolve absolute path for package dir
+    package_dir=$(realpath "$package_dir")
+
+    # Find files and output target symlink paths
+    find "$package_dir" -type f -print0 | while IFS= read -r -d '' file; do
+      rel_path=$(realpath --relative-to="$package_dir" "$file")
+      echo "$target_dir/$rel_path"
+    done
+  done < "$package_list_file"
+
+  # Wait for user keypress before exiting
+  echo
+  read -rsp $'Press any key to continue...\n' -n1
+}
+
+
+
+stow_from_config() {
+  local packages_root="$1"
+  local package_list_file="$2"
+  local target_dir="$HOME"
+
+  # Validate inputs
+  if [[ ! -d "$packages_root" ]]; then
+    echo "Packages root directory '$packages_root' does not exist." >&2
+    return 1
+  fi
+  if [[ ! -f "$package_list_file" ]]; then
+    echo "Package list file '$package_list_file' does not exist." >&2
+    return 1
+  fi
+
+  while IFS= read -r package_name || [[ -n "$package_name" ]]; do
+    [[ -z "$package_name" || "$package_name" =~ ^# ]] && continue
+
+    local package_dir="$packages_root/$package_name"
+    if [[ ! -d "$package_dir" ]]; then
+      echo "Package directory '$package_dir' does not exist. Skipping." >&2
+      continue
+    fi
+
+    # Go into package directory temporarily to simulate how stow maps structure
+    (
+      cd "$package_dir" || exit
+      find . -type f -print0 | while IFS= read -r -d '' file; do
+        local clean_path="${file#./}"
+        echo "$target_dir/$clean_path"
+      done
+    )
+  done < "$package_list_file"
+
 }
 
 
