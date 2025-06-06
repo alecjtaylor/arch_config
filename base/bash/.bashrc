@@ -119,7 +119,6 @@ alias ssh='TERM=xterm-256color ssh'
 
 # ssh to weatherpi
 alias weatherpi='TERM=xterm-256color ssh pi@weatherpi.broadband'
-alias ubuntuserver='TERM=xterm-256color ssh alecjtaylor@192.168.1.181'
 
 # yt-dlp to MP3 convert
 alias yt-dlp-mp3='yt-dlp -x --audio-format mp3 --audio-quality 0'
@@ -129,8 +128,8 @@ alias yt-dlp-mp3='yt-dlp -x --audio-format mp3 --audio-quality 0'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Get NAS mounted - requires /mnt/NAS to exist
-alias NAS-mount='mount -t cifs -o username=alecjtaylor,pass=Zil48vil1337 //192.168.1.100/maindata/ /mnt/NAS'
-alias NAS-unmount='umount -f /mnt/NAS'
+alias NAS-mount='sudo mount -t cifs //192.168.1.100/MainData /mnt/NAS/ -o credentials=/home/alecjtaylor/.smbcreds,vers=3.0'
+alias NAS-unmount='sudo umount -f /mnt/NAS'
 
 #Hyprland network config
 alias wifi='sudo systemctl enable --now NetworkManager && nmtui'
