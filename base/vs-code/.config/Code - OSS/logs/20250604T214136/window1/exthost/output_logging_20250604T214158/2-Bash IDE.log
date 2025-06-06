@@ -1,0 +1,25 @@
+[Warn  - 21:42:09] 20:42:09.327 WARNING ⛔️ Environment variable configuration is being deprecated, please use workspace configuration. The following environment variables were used: shfmt
+[Info  - 21:42:09] 20:42:09.512 INFO BackgroundAnalysis: resolving glob "**/*@(.sh|.inc|.bash|.command)" inside "file:///home/alecjtaylor/git/arch_config"...
+[Info  - 21:42:09] 20:42:09.646 INFO BackgroundAnalysis: Glob resolved with 2 files after 0.133 seconds
+[Info  - 21:42:09] 20:42:09.706 INFO BackgroundAnalysis: Completed after 0.194 seconds.
+[Warn  - 21:42:10] 20:42:10.036 WARNING ⛔️ ShellCheck: disabling linting as no executable was found at path 'shellcheck'
+[Warn  - 22:34:06] 21:34:06.324 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 22:34:07] 21:34:07.125 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 22:34:07] 21:34:07.632 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 22:34:08] 21:34:08.023 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 22:34:54] 21:34:54.858 WARNING ⛔️ file:///home/alecjtaylor/git/arch_config/.bashrc line 155: failed to resolve path
+[Warn  - 22:34:54] 21:34:54.858 WARNING ⛔️ file:///home/alecjtaylor/git/arch_config/.bashrc line 173: failed to resolve path
+[Warn  - 22:34:59] 21:34:59.316 WARNING ⛔️ file:///home/alecjtaylor/git/arch_config/.bashrc line 155: failed to resolve path
+[Warn  - 22:34:59] 21:34:59.316 WARNING ⛔️ file:///home/alecjtaylor/git/arch_config/.bashrc line 173: failed to resolve path
+[Warn  - 22:49:42] 21:49:42.939 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:04:27] 22:04:27.792 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:06:59] 22:06:59.996 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:04] 22:07:04.004 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:04] 22:07:04.828 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:04] 22:07:04.940 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:05] 22:07:05.315 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:08] 22:07:08.519 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:13] 22:07:13.059 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:13] 22:07:13.180 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:07:13] 22:07:13.263 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error
+[Warn  - 23:54:46] 22:54:46.613 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/git/arch_config/setuptidy.sh: syntax error

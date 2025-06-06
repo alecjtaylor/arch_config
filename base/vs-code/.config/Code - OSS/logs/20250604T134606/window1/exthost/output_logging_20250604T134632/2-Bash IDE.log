@@ -1,0 +1,51 @@
+[Warn  - 13:46:42] 12:46:42.734 WARNING ⛔️ Environment variable configuration is being deprecated, please use workspace configuration. The following environment variables were used: shfmt
+[Info  - 13:46:42] 12:46:42.891 INFO BackgroundAnalysis: resolving glob "**/*@(.sh|.inc|.bash|.command)" inside "file:///home/alecjtaylor/Arch_Config"...
+[Info  - 13:46:42] 12:46:42.981 INFO BackgroundAnalysis: Glob resolved with 1 files after 0.089 seconds
+[Info  - 13:46:43] 12:46:43.038 INFO BackgroundAnalysis: Completed after 0.146 seconds.
+[Warn  - 13:46:43] 12:46:43.414 WARNING ⛔️ ShellCheck: disabling linting as no executable was found at path 'shellcheck'
+[Warn  - 13:48:17] 12:48:17.336 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:48:18] 12:48:18.984 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:37] 12:49:37.764 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:39] 12:49:39.060 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:40] 12:49:40.568 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:41] 12:49:41.087 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:41] 12:49:41.591 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:42] 12:49:42.773 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:43] 12:49:43.568 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:49:43] 12:49:43.685 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:37] 12:50:37.927 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:38] 12:50:38.678 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:43] 12:50:43.544 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:49] 12:50:49.047 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:50] 12:50:50.379 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:51] 12:50:51.353 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:52] 12:50:52.121 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:52] 12:50:52.223 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:50:53] 12:50:53.259 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:01] 12:51:01.924 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:02] 12:51:02.858 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:04] 12:51:04.153 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:05] 12:51:05.205 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:06] 12:51:06.143 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:51:16] 12:51:16.329 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setup.sh: syntax error
+[Warn  - 13:52:42] 12:52:42.834 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 13:53:18] 12:53:18.649 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 13:54:56] 12:54:56.998 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 13:54:57] 12:54:57.487 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:20:45] 13:20:45.143 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:23:17] 13:23:17.240 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:23:42] 13:23:42.864 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:23:53] 13:23:53.379 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:23:54] 13:23:54.069 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:00] 13:24:00.635 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:01] 13:24:01.105 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:03] 13:24:03.259 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:04] 13:24:04.866 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:05] 13:24:05.360 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:05] 13:24:05.922 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:39] 13:24:39.087 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:40] 13:24:40.587 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 14:24:41] 13:24:41.972 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 16:05:28] 15:05:28.309 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 16:06:42] 15:06:42.761 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error
+[Warn  - 16:07:02] 15:07:02.114 WARNING ⛔️ Error while parsing file:///home/alecjtaylor/Arch_Config/setuptidy.sh: syntax error

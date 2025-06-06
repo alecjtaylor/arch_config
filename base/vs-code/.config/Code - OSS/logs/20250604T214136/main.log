@@ -1,0 +1,6 @@
+2025-06-04 21:41:37.042 [error] Invalid path provided: /home/alecjtaylor/Arch_Config, ENOENT: no such file or directory, stat '/home/alecjtaylor/Arch_Config'
+2025-06-04 21:41:37.176 [info] update#setState disabled
+2025-06-04 21:41:37.176 [info] update#ctor - updates are disabled as there is no update URL
+2025-06-04 21:41:54.679 [info] Extension host with pid 30573 exited with code: 0, signal: unknown.
+2025-06-05 00:16:34.454 [info] Extension host with pid 30628 exited with code: 0, signal: unknown.
+2025-06-05 00:16:34.646 [error] [UtilityProcess id: 1, type: fileWatcher, pid: 30619]: crashed with code 15 and reason 'killed'
