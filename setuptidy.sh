@@ -39,8 +39,8 @@ EOF
       2) echo "Base Config rollback" && stow_from_config base stow.config --unstow && sleep 5 ;;
       3) echo "Hyprland 01" && sleep 2 ;;
       4) echo "i3 01" && sleep 3 ;;
-	  5) echo ""
-      6) echo ""
+	  5) echo "" ;;
+      6) echo "" ;;
 	  7) echo "Return to main menu." && sleep 1.5; return 1 ;;
       *) echo "Invalid option." ;;
     esac
@@ -84,8 +84,8 @@ EOF
       2) echo "Installing base packages..." && sleep 2 && install_packages "${PACKAGES[@]}" ;;
       3) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" ;;
       4) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall && start_stow ;;
-      5) echo "Coming soon for KDE..." && sleep 2 ;; # tweak_ssdm
-      6) echo "Coming soon for i3wm..." && sleep 2 ;; # tweak_ssdm
+      5) echo "Coming soon for KDE..." && sleep 2 ;; 
+      6) echo "Coming soon for i3wm..." && sleep 2 && install_packages "${i3[@]}" ;; 
       7) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
       8) echo "Bye!"; return 1 ;;
       *) echo "Invalid option." ;;
@@ -288,13 +288,12 @@ start_stow() {
 stow_from_config() {
   local stow_base_dir="$1"
   local config_file="$2"
-  local mode="$3"  # optional: "--unstow"
   local original_dir
   original_dir="$(pwd)"
 
   # Validate arguments
   if [[ -z "$stow_base_dir" || -z "$config_file" ]]; then
-    echo "Usage: run_stow_from_config <stow_base_dir> <config_file> [--unstow]"
+    echo "Usage: stow_from_config <stow_base_dir> <config_file>"
     return 1
   fi
 
@@ -311,15 +310,6 @@ stow_from_config() {
     return 1
   fi
 
-  # Build stow arguments
-  local stow_args=(-t "$HOME")
-  if [[ "$mode" == "--unstow" ]]; then
-    stow_args=(-D -t "$HOME")
-    echo "🔁 Unstowing mode"
-  else
-    echo "✅ Stowing mode"
-  fi
-
   # Change into stow base dir
   cd "$base_path" || {
     echo "❌ Could not cd into $base_path"
@@ -330,46 +320,21 @@ stow_from_config() {
   echo "📄 Using config: $config_file"
 
   # Loop through each line
-while IFS= read -r line || [[ -n "$line" ]]; do
-  # Skip empty lines and comments
-  [[ -z "$line" || "$line" =~ ^# ]] && continue
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    # Skip empty lines and comments
+    [[ -z "$line" || "$line" =~ ^# ]] && continue
 
-  if [[ -d "$line" ]]; then
-    local target_path="$HOME/.config/$line"
+    if [[ -d "$line" ]]; then
+      local target_path="$HOME/.config/$line"
 
-    if [[ "$mode" == "--unstow" ]]; then
-      echo "➖ Unstowing: $line"
-      stow -D "$line"
-
-      # Check for backups
-      backup_glob="$target_path.backup.*"
-      latest_backup=$(ls -t $backup_glob 2>/dev/null | head -n 1)
-
-      if [[ -n "$latest_backup" ]]; then
-        read -p "🗂️  Restore backup from $latest_backup? (y/n): " yn < /dev/tty
-        case "$yn" in
-          [Yy]* )
-            mv "$latest_backup" "$target_path"
-            echo "✅ Restored backup to: $target_path"
-            ;;
-          * )
-            echo "⏩ Skipping restore for: $line"
-            ;;
-        esac
-      fi
-
-    else
-      # Stow mode
       if [[ -e "$target_path" ]]; then
         echo "⚠️  Existing config detected at: $target_path"
-        read -p "❓ Backup and remove '$target_path' before stowing '$line'? (y/n): " yn < /dev/tty
+        read -p "❓ Overwrite this config? (y to delete and replace / n to skip): " yn < /dev/tty
 
         case "$yn" in
           [Yy]* )
-            timestamp=$(date +%Y%m%d_%H%M%S)
-            backup_path="$target_path.backup.$timestamp"
-            mv "$target_path" "$backup_path"
-            echo "💾 Backed up to: $backup_path"
+            rm -rf "$target_path"
+            echo "🗑️ Removed: $target_path"
             ;;
           [Nn]* )
             echo "⏩ Skipping $line"
@@ -384,12 +349,11 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
       echo "➕ Stowing: $line"
       stow -t "$HOME" "$line"
-    fi
 
-  else
-    echo "⚠️  Skipping: '$line' not found in $base_path"
-  fi
-done < "$config_path"
+    else
+      echo "⚠️  Skipping: '$line' not found in $base_path"
+    fi
+  done < "$config_path"
 
   # Return to original directory
   cd "$original_dir"
