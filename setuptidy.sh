@@ -26,19 +26,19 @@ EOF
     echo -e "\nChoose an option:\n"
     echo "1) Base Config Deploy"
     echo "2) KDE Config Deploy"
-    echo "3) Hyprland 01 Deploy"
-    echo "4) i3_01 Deploy" 
+    echo "3) Hyprland 01 Config Deploy"
+    echo "4) i3_01 Config Deploy" 
 	echo "5) ***"
 	echo "6) ***"
     echo "7) Returning to main menu"
     echo
 
-    read -p "Enter choice [1-5]: " choice
+    read -p "Enter choice [1-7]: " choice
     case $choice in
       1) echo "Base Config deployment... " && stow_from_config base base/stow.config && sleep 5 ;;
       2) echo "Installing KDE config files" && sleep 2 && restore_kde_settings kde_01/restore.tar.gz && sleep 5 ;;
       3) echo "Hypr_01 config deployment" && stow_from_config hypr_01 hypr_01/stow.config && sleep 5 ;;
-      4) echo "i3_01 config deployment" && stow_from_config i3_01 i3_01/stow/.config && sleep 5 ;;
+      4) echo "i3_01 config deployment" && stow_from_config i3_01 i3_01/stow.config && sleep 5 ;;
 	  5) echo "" ;;
       6) echo "" ;;
 	  7) echo "Return to main menu." && sleep 2; return 1 ;;
