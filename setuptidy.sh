@@ -25,7 +25,7 @@ EOF
 
     echo -e "\nChoose an option:\n"
     echo "1) Base Config Customisation - Deploy"
-    echo "2) Base Config Customisation - Roll Back"
+    echo "2) KDE Base Config Deploy"
     echo "3) Hyprland 01 - Deploy"
     echo "4) Hyprland 01 - Roll Back" 
 	echo "5) i3 01 - Deploy"
@@ -36,7 +36,7 @@ EOF
     read -p "Enter choice [1-5]: " choice
     case $choice in
       1) echo "Base Config deployment... " && stow_from_config base base/stow.config && sleep 5 ;;
-      2) echo "Base Config rollback" && stow_from_config base stow.config --unstow && sleep 5 ;;
+      2) echo "Installing KDE config files" && sleep 2 && restore_kde_settings kde_01/restore.tar.gz ;;
       3) echo "Hyprland 01" && sleep 2 ;;
       4) echo "i3 01" && sleep 3 ;;
 	  5) echo "" ;;
@@ -70,24 +70,26 @@ EOF
     echo -e "\nChoose an option:\n"
     echo "1) System Update"
     echo "2) Base System Install"
-    echo "3) Hyprland Install"
-    echo "4) Start Services for new build"
-    echo "5) *** KDE (NOT YET FUNCTIONAL) ***"
-    echo "6) *** i3wm (NOT YET FUNCTIONAL) ***"
-    echo "7) Deploy custom config"
-    echo "8) Exit"
+    echo "3) Extra packages Install"
+    echo "4) Hyprland Install"
+    echo "5) Start Services for new build"
+    echo "6) *** KDE go to custom config setting ***"
+    echo "7) i3wm packages Install"
+    echo "8) Deploy custom configuration stowed packages"
+    echo "9) Exit"
     echo
 
-    read -p "Enter choice [1-8]: " choice
+    read -p "Enter choice [1-9]: " choice
     case $choice in
       1) update_Pacman && tweak_Pacman && check_AUR && check_Refelector ;;
-      2) echo "Installing base packages..." && sleep 2 && install_packages "${PACKAGES[@]}" ;;
-      3) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" ;;
-      4) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall && start_stow ;;
-      5) echo "Coming soon for KDE..." && sleep 2 ;; 
-      6) echo "Coming soon for i3wm..." && sleep 2 && install_packages "${i3[@]}" ;; 
-      7) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
-      8) echo "Bye!"; return 1 ;;
+      2) echo "Installing base packages..." && sleep 2 && install_packages "${PACKAGES[@]}" && sleep 2 ;;
+      3) echo "Installing Extra packages..." && sleep 2 && install_packages "${EXTRA[@]}" && sleep 2 ;;
+      4) echo "Installing Hyprland packages..." && sleep 2 && install_packages "${HYPRLAND[@]}" && sleep 2 ;;
+      5) echo "Starting Services..." && sleep 2 && start_syncthing && start_bluetooth && start_firewall ;;
+      6) echo "Installing KDE config files" & sleep 2 && custom_Config ;;
+      7) echo "Installing i3wm packages..." && sleep 2 && install_packages "${i3[@]}" ;;
+      8) echo "Setting up custom configuration..." & sleep 2 && custom_Config ;;
+      9) echo "Bye!"; return 1 ;;
       *) echo "Invalid option." ;;
     esac
   done
@@ -282,6 +284,40 @@ start_stow() {
     * ) echo "Please enter 'y' or 'no'." ;;
   esac
 }
+
+restore_kde_settings() {
+  local ARCHIVE="$1"
+
+  # Check if argument was provided
+  if [ -z "$ARCHIVE" ]; then
+    echo "Usage: restore_kde_settings [path/to/kde-settings-backup.tar.gz]"
+    return 1
+  fi
+
+  # Validate archive file
+  if [ ! -f "$ARCHIVE" ]; then
+    echo "❌ Archive not found: $ARCHIVE"
+    return 1
+  fi
+
+  echo "⚠️  Make sure you are logged out of KDE before restoring settings!"
+  read -rp "Continue with restore? [y/N]: " confirm
+  if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo "Cancelled."
+    return 0
+  fi
+
+  # Extract backup
+  echo "Restoring KDE settings from $ARCHIVE..."
+  tar -xzf "$ARCHIVE" -C "$HOME"
+
+  # Fix permissions
+  chown -R "$USER:$USER" "$HOME/.config" "$HOME/.local" "$HOME/.kde*" 2>/dev/null
+
+  echo "✅ Restore complete."
+  echo "Please log out and log back in to KDE to apply your restored settings."
+}
+
 
 
 #########################
