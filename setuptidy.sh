@@ -221,8 +221,6 @@ start_tlp() {
 }
 
 
-}
-
 start_syncthing() {
   read -p "Do you want to start the Syncthing Service? (y/n): " yn
   case $yn in
