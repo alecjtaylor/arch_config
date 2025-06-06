@@ -1,0 +1,4 @@
+2025-06-04 21:41:42.080 [info] Log level: Info
+2025-06-04 21:41:59.228 [info] Log level: Info
+2025-06-04 21:41:59.770 [warning] [GitHubBranchProtectionProvider][updateRepositoryBranchProtection] Failed to update repository branch protection: No GitHub authentication session available.
+2025-06-04 21:42:01.895 [warning] [GitHubSourceControlHistoryItemDetailsProvider][_loadAssignableUsers] Failed to load assignable user(s) for alecjtaylor/arch_config: Error: No GitHub authentication session available.

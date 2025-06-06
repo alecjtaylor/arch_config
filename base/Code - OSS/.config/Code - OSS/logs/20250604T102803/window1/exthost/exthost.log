@@ -1,0 +1,21 @@
+2025-06-04 10:28:07.088 [info] Extension host with pid 7932 started
+2025-06-04 10:28:07.138 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-06-04 10:28:07.149 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-06-04 10:28:07.261 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-06-04 10:28:07.425 [info] Eager extensions activated
+2025-06-04 10:28:07.445 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-06-04 10:28:07.449 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-06-04 10:28:26.275 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-06-04 10:32:29.682 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onWalkthrough:pythonWelcome'
+2025-06-04 10:32:31.512 [error] Error: Extension 'ms-python.python' CANNOT use API proposal: testObserver.
+Its package.json#enabledApiProposals-property declares:  but NOT testObserver.
+ The missing proposal MUST be added and you must start in extension development mode or use the following command line switch: --enable-proposed-api ms-python.python
+	at N (file:///usr/lib/code/out/vs/workbench/api/node/extensionHostProcess.js:113:30038)
+	at get testResults (file:///usr/lib/code/out/vs/workbench/api/node/extensionHostProcess.js:170:33198)
+	at C.activate (/home/alecjtaylor/.vscode-oss/extensions/ms-python.python-2025.4.0-universal/out/client/extension.js:2:908659)
+	at /home/alecjtaylor/.vscode-oss/extensions/ms-python.python-2025.4.0-universal/out/client/extension.js:2:2457
+	at Array.map (<anonymous>)
+	at v.activateWorkspace (/home/alecjtaylor/.vscode-oss/extensions/ms-python.python-2025.4.0-universal/out/client/extension.js:2:2447)
+2025-06-04 10:33:40.575 [info] ExtensionService#_doActivateExtension mhutchie.git-graph, startup: false, activationEvent: '*'
+2025-06-04 10:36:21.735 [info] Extension host terminating: renderer closed the MessagePort
+2025-06-04 10:36:21.775 [info] Extension host with pid 7932 exiting with code 0
