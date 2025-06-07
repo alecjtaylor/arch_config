@@ -3,7 +3,7 @@
 # === KDE Settings Backup Script (KDE-specific .config only) ===
 
 # Set backup destination and temp directory
-BACKUP_DIR="$HOME/stow/kde"
+BACKUP_DIR="$HOME/git/arch_config/kde_01/"
 TEMP_DIR=$(mktemp -d)
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 ARCHIVE_NAME="kde-settings-backup-$TIMESTAMP.tar.gz"
@@ -16,6 +16,7 @@ echo "📦 Backing up KDE-specific settings..."
 # List of KDE-specific config files/folders from ~/.config
 KDE_CONFIG_ITEMS=(
   "plasma-org.kde.plasma.desktop-appletsrc"
+  "powermanagementprofilesrc"
   "kglobalshortcutsrc"
   "kwinrc"
   "kdeglobals"
@@ -33,6 +34,7 @@ KDE_CONFIG_ITEMS=(
   "kate*"
   "gtkrc*"              # If you're using KDE's GTK theming
   "gtk-3.0"
+  "kmixrc"
 )
 
 mkdir -p "$TEMP_DIR/.config"
